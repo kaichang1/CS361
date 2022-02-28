@@ -1,0 +1,103 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+
+body {
+    background-image: linear-gradient(180deg, #fff, #F8FFFF 100px, #fff);
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    color: #414141;
+}
+
+/* NAVBAR
+-------------------------------------------------- */
+
+.navbar-brand, .nav-link {
+    font-size: 25px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.border-bottom {
+    border-bottom: 2px solid #b0e0e4 !important;
+}
+
+/* HOME CONTENT
+-------------------------------------------------- */
+
+/* Center align */
+.home .col p {
+    margin-bottom: 1.5rem;
+    margin-right: .75rem;
+    margin-left: .75rem;
+    text-align: center;
+}
+
+/* Thin out the home headings */
+.home-heading {
+    font-size: 100px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -.05rem;
+}
+
+.lead {
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+/* HELP CONTENT
+------------------------- */
+
+
+/* OTHER
+------------------------- */
+
+.less-width {
+    max-width: 960px;
+}
+
+.divider {
+    margin-top: 7rem;
+}
+
+.btn-get-started {
+    border-radius: 2rem;
+}
+
+
+
+
+
+
+
+
+.main-link {
+    font-size: 18px;
+    font-weight: bold;
+    color: #414141;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* .heading {
+    font-size: 100px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -.05rem;
+} */
+
+
+
+
+  
+/* .pricing-header {
+    max-width: 700px;
+} */

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Analyze - MarketWatch Analyzer</title>
+<link href="../static/css/main.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<main>
+    <div class="container divider">
+        <div class="row">
+            <div class="col-4">
+                <h1 class="display-6 fw-normal">Recent Articles</h1>
+                {% for article in news %}
+                    <hr>
+                    <a href="{{ url_for('results', url=article['href']) }}" class="main-link text-decoration-none">{{ article.text }}</a>
+                    <br>
+                    <a href="{{ article['href'] }}" class="text-decoration-none">View article</a>
+                {% endfor %}
+                <hr>
+            </div>
+            <div class="col-8">
+                <div class="container less-width divider">
+                    <div class="p-3 pb-md-4 mx-auto text-center">
+                        <h2 class="display-4 fw-normal">Analyze</h2>
+                        <form action="#" method="POST" class="card p-2">
+
+                            <div class="input-group">
+                                <input type="url" name="url" class="form-control" placeholder="URL" oninvalid="this.setCustomValidity('Please enter the entire URL starting with https:/\/')" oninput="setCustomValidity('')" required>
+                                <button type="submit" value="submit" class="btn btn-primary">Go</button>
+                            </div>
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </form>
+                        <p class="fs-4 text-muted">Enter a URL or click an article on the left to begin analysis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

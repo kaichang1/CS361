@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Results - MarketWatch Analyzer</title>
+<link href="../static/css/main.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<main>
+  <div class="container">
+    <div class="p-3 pb-md-4 mx-auto text-center">
+      <h1 class="display-4 fw-normal">Results</h1>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      
+        <div class="col-4 p-3 pb-md-4 mx-auto">
+          <h2 class="display-6 fw-normal">Summary</h2>
+          <hr>
+          <h3>Most mentioned stock:</h3>
+          {% if main_company is not none %}
+            <p class="fs-5">{{ main_company }} ({{ main_symbol }})</p>
+          {% else %}
+            <p class="fs-5">None</p>
+          {% endif %}
+
+          <!-- Teammate's microservice -->
+          {{ microservice_response }}
+          <!-- ----------------------- -->
+
+          <h3>Compound polarity:</h3>
+          <p class="fs-5">{{ polarity.compound | round(3) }}</p>
+
+          <h3>Subjectivity:</h3>
+          <p class="fs-5">{{ subjectivity | round(3) }}</p>
+
+          <h3>All stocks mentioned:</h3>
+          {% if counts_table is not none %}
+            {{ counts_table | safe }}
+          {% else %}
+            <p class="fs-5">None</p>
+          {% endif %}
+        </div>
+
+        <div class="col-8 p-3 pb-md-4 mx-auto">
+          <h2 class="display-6 fw-normal">{{ title }}</h2>
+          <a href="{{ url }}" class="text-decoration-none">View article</a>
+
+          <hr>
+          <section id="polarity">
+            <h3>Polarity scores:</h3>
+            {% if polarity.compound <= -0.05 %}
+              <p class="fs-5">
+                The
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Rates the overall sentiment on a scale of -1 (very negative) to +1 (very positive).">compound polarity score</a>
+                for this article is {{ polarity.compound | round(3) }}, which signifies that the overall article sentiment is <strong>negative</strong>.
+              </p>
+            {% elif polarity.compound >= 0.05 %}
+              <p class="fs-5">
+                The
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Rates the overall sentiment on a scale of -1 (very negative) to +1 (very positive).">compound polarity score</a>
+                for this article is {{ polarity.compound | round(3) }}, which signifies that the overall article sentiment is <strong>positive</strong>.
+              </p>
+            {% else %}
+              <p class="fs-5">
+                The
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Rates the overall sentiment on a scale of -1 (very negative) to +1 (very positive).">compound polarity score</a>
+                for this article is {{ polarity.compound | round(3) }}, which signifies that the overall article sentiment is <strong>neutral</strong>.
+              </p>
+            {% endif %}
+
+            <h4>Breakdown:</h4>
+            <ul>
+              <li class="fs-5">Article is rated as {{ (polarity.pos * 100) | round(1) }}% positive.</li>
+              <li class="fs-5">Article is rated as {{ (polarity.neu * 100) | round(1) }}% neutral.</li>
+              <li class="fs-5">Article is rated as {{ (polarity.neg * 100) | round(1) }}% negative.</li>
+            </ul>
+            <h4>
+              <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="The top sentence is the most negative sentence in the article, while the bottom sentence is the most positive sentence.">Key sentences</a>
+            </h4>
+            <p class="fs-5">{{ polarizing_sentences[0] }}</p>
+            <p class="fs-5">{{ polarizing_sentences[1] }}</p>
+          </section>
+
+          <hr>
+          <section id="subjectivity">
+            <h3>Subjectivity scores:</h3>
+            {% if subjectivity < 0.5 %}
+              <p class="fs-5">
+                The
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Rates the overall subjectivity on a scale of 0 (very objective) to +1 (very subjective).">subjectivity score</a>
+                for this article is {{ subjectivity | round(3) }}, which signifies that the article content is <strong>objective</strong>.
+              </p>
+            {% elif subjectivity > 0.5 %}
+              <p class="fs-5">
+                The
+                subjectivity score
+                for this article is {{ subjectivity | round(3) }}, which signifies that the article content is <strong>subjective</strong>.
+              </p>
+            {% else %}
+              <p class="fs-5">
+                The
+                subjectivity score
+                for this article is {{ subjectivity | round(3) }}, which signifies that the article content is <strong>neither</strong> subjective nor objective.
+              </p>
+            {% endif %}
+          </section>
+
+        </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
