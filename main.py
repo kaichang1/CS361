@@ -19,13 +19,6 @@ def news_scraper():
         return None
 
     soup = BeautifulSoup(webpage.content, 'html.parser')
-
-    # Don't think we need this since we aren't doing .text() or something but I'll leave it here for now just in case
-    # try:
-    # except AttributeError:
-    #     print("attribute")
-    #     return None
-
     articles = soup.find(attrs={'class': 'collection__elements j-scrollElement'})
     articles = articles.find_all(attrs={'class': 'element--article'})
 
@@ -42,8 +35,8 @@ def article_scraper(url):
         webpage = requests.get(url)
     except requests.exceptions.MissingSchema:
         return None
-    soup = BeautifulSoup(webpage.content, 'html.parser')
 
+    soup = BeautifulSoup(webpage.content, 'html.parser')
     try:
         title = soup.find(attrs={'itemprop': 'headline'}).get_text()
         body = soup.find(attrs={'itemprop': 'articleBody'}).get_text()
@@ -82,7 +75,6 @@ def get_counts_df(text):
             counts.append(ent.text)
 
     counts_df = pd.DataFrame(counts).reset_index()
-
     try:
         counts_df = counts_df.groupby(0).index.count().reset_index().rename(columns={0: 'company', 'index': 'counts'})
     except KeyError:
@@ -116,10 +108,10 @@ def get_polarizing_sentences(text):
     return min_sentence, max_sentence
 
 
-# Setup
+### Setup ###
 
 # Stop words
-stops = {'A', 'RBC', 'two'}
+stops = {'A', 'RBC', 'two', 'UK'}
 
 # stocks.tsv modified from spacy.pythonhumanities.com
 df = pd.read_csv("static/data/stocks.tsv", sep='\t')
@@ -132,7 +124,8 @@ df_symbol = df.set_index('Symbol')
 df_company_name = df.set_index('CompanyName')
 
 df_symbol = df_symbol[['CompanyName']]
-# Some companies have multiple stock symbols. To handle this, we group by company name and set the `symbol` column to equal all stock symbols separated by commas
+# Some companies have multiple stock symbols which results in rows with duplicate indices.
+# To handle this, we group by company name and set the `symbol` column to equal all grouped stock symbols separated by commas
 # https://stackoverflow.com/questions/50422809/pandas-group-by-with-all-the-values-of-the-group-as-comma-separated
 df_company_name = df_company_name.groupby(df_company_name.index).Symbol.agg([('Symbol', ', '.join)])
 

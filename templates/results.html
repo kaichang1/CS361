@@ -26,7 +26,7 @@
           {% endif %}
 
           <!-- Teammate's microservice -->
-          {{ microservice_response }}
+          <p class="fs-5">{{ microservice_response }}</p>
           <!-- ----------------------- -->
 
           <h3>Compound polarity:</h3>
@@ -77,15 +77,15 @@
               <li class="fs-5">Article is rated as {{ (polarity.neg * 100) | round(1) }}% negative.</li>
             </ul>
             <h4>
-              <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="The top sentence is the most negative sentence in the article, while the bottom sentence is the most positive sentence.">Key sentences</a>
+              <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="The top sentence is the most positive sentence in the article, while the bottom sentence is the most negative sentence.">Key sentences</a>
             </h4>
-            <p class="fs-5">{{ polarizing_sentences[0] }}</p>
             <p class="fs-5">{{ polarizing_sentences[1] }}</p>
+            <p class="fs-5">{{ polarizing_sentences[0] }}</p>
           </section>
 
           <hr>
           <section id="subjectivity">
-            <h3>Subjectivity scores:</h3>
+            <h3>Subjectivity score:</h3>
             {% if subjectivity < 0.5 %}
               <p class="fs-5">
                 The

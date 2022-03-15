@@ -10,11 +10,14 @@ app.config.from_pyfile("config.py")
 def index():
     return render_template("index.html")
 
-@app.route("/analyze", methods=["POST", "GET"])
+@app.route("/analyze")
 def analyze():
-    if request.method == "POST":
-        url = request.form["url"]
+    # If user entered a URL to analyze
+    if request.args.get("url"):
+        url = request.args["url"]
         return redirect(url_for("results", url=url))
+
+    # Normal page load
     else:
         news = main.news_scraper()
         return render_template("analyze.html", news=news)
@@ -69,8 +72,9 @@ def results():
             break
     # -------------------------------------- #
 
-    return render_template("results.html", url=url, title=title, counts_table=counts_table, main_company=main_company, main_symbol=main_symbol, subjectivity=subjectivity, polarity=polarity, polarizing_sentences=polarizing_sentences, microservice_response=microservice_response)
-    
+    return render_template("results.html", url=url, title=title, counts_table=counts_table, main_company=main_company,
+        main_symbol=main_symbol, subjectivity=subjectivity, polarity=polarity, polarizing_sentences=polarizing_sentences,
+        microservice_response=microservice_response)
     # -------------------------------------- #
 
 @app.route("/help")
