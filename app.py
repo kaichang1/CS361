@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import main
-import time
-import os
 
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
@@ -12,7 +10,7 @@ def index():
 
 @app.route("/analyze")
 def analyze():
-    # If user entered a URL to analyze
+    # If user is requesting to analyze a URL
     if request.args.get("url"):
         url = request.args["url"]
         return redirect(url_for("results", url=url))
@@ -44,38 +42,18 @@ def results():
     polarizing_sentences = main.get_polarizing_sentences(entire_article)
 
     if counts_table is not None:
+        # At least one stock symbol or company is mentioned
         main_company = counts_table.iloc[0]["company"]
         main_symbol = counts_table.iloc[0]["symbol"]
         counts_table = counts_table.to_html(index=False, justify="left", classes="table table-striped")
     else:
+        # No stock symbols or companies are mentioned
         main_company = None
         main_symbol = None
 
-    # -------------------------------------- #
-    # Interacting with teammate's microservice
-    # -------------------------------------- #
-    print("Sending request...")
-    with open('../361-microservice-main/ticker-input.txt', 'w') as file:
-        file.write(main_symbol)
-    print("Request sent")
-
-    while True:
-        print("Waiting for response...")
-        try:
-            with open('../361-microservice-main/ticker-output.txt') as file:
-                microservice_response = file.read()
-        except FileNotFoundError:
-            time.sleep(2)
-        else:
-            print("Response retrieved")
-            os.remove('../361-microservice-main/ticker-output.txt')
-            break
-    # -------------------------------------- #
-
-    return render_template("results.html", url=url, title=title, counts_table=counts_table, main_company=main_company,
-        main_symbol=main_symbol, subjectivity=subjectivity, polarity=polarity, polarizing_sentences=polarizing_sentences,
-        microservice_response=microservice_response)
-    # -------------------------------------- #
+    return render_template("results.html", url=url, title=title, counts_table=counts_table,
+                           main_company=main_company, main_symbol=main_symbol, subjectivity=subjectivity,
+                           polarity=polarity, polarizing_sentences=polarizing_sentences)
 
 @app.route("/help")
 def help():

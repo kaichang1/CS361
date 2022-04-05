@@ -25,13 +25,8 @@
             <p class="fs-5">None</p>
           {% endif %}
 
-          <!-- Teammate's microservice -->
-          <p class="fs-5">{{ microservice_response }}</p>
-          <!-- ----------------------- -->
-
           <h3>Compound polarity:</h3>
           <p class="fs-5">{{ polarity.compound | round(3) }}</p>
-
           <h3>Subjectivity:</h3>
           <p class="fs-5">{{ subjectivity | round(3) }}</p>
 
