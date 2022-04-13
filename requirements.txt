@@ -9,6 +9,7 @@ colorama==0.4.4
 cymem==2.0.6
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl
 Flask==2.0.3
+gunicorn==20.1.0
 idna==3.3
 itsdangerous==2.0.1
 Jinja2==3.0.3
