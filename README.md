@@ -1,6 +1,6 @@
 # stock-article-analyzer
 
-Website for analyzing MarketWatch stock articles.
+Website for analyzing MarketWatch stock articles. Built using Flask and Bootstrap. Deployed with Heroku.
 
 Check it out here: https://marketwatch-analyzer.herokuapp.com/
 
