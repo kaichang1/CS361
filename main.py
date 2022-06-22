@@ -114,6 +114,10 @@ def get_polarizing_sentences(text):
     max_sentence = None
 
     for sent in doc.sents:
+        # Skip empty sentences
+        if not str(sent.text).strip():
+            continue
+
         polarity = get_polarity(sent.text)['compound']
         if polarity < min_polarity:
             min_polarity = polarity
@@ -121,7 +125,7 @@ def get_polarizing_sentences(text):
         if polarity > max_polarity:
             max_polarity = polarity
             max_sentence = sent
-        
+
     return min_sentence, max_sentence
 
 
