@@ -90,13 +90,13 @@
             {% elif subjectivity > 0.5 %}
               <p class="fs-5">
                 The
-                subjectivity score
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Rates the overall subjectivity on a scale of 0 (very objective) to +1 (very subjective).">subjectivity score</a>
                 for this article is {{ subjectivity | round(3) }}, which signifies that the article content is <strong>subjective</strong>.
               </p>
             {% else %}
               <p class="fs-5">
                 The
-                subjectivity score
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Rates the overall subjectivity on a scale of 0 (very objective) to +1 (very subjective).">subjectivity score</a>
                 for this article is {{ subjectivity | round(3) }}, which signifies that the article content is <strong>neither</strong> subjective nor objective.
               </p>
             {% endif %}
