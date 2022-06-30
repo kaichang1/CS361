@@ -34,7 +34,7 @@ def results():
         return redirect(url_for("analyze"))
 
     title, body = result
-    entire_article = title + " " + body
+    entire_article = title + ". " + body
 
     counts_table = main.get_counts_df(entire_article)
     subjectivity = main.get_subjectivity(entire_article)

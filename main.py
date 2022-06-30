@@ -103,10 +103,10 @@ def get_polarizing_sentences(text):
     Args:
         text (string): text to analyze
     Returns:
-        tuple: tuple consisting of (most negative sentence, most positive sentence).
-            Each tuple element is of type spacy.tokens.span.Span.
+        tuple: tuple consisting of (most negative sentence, most positive sentence),
+            where each tuple element is a string.
     """
-    doc = nlp(text)
+    doc = nlp2(text)
 
     min_polarity = float('inf')
     max_polarity = float('-inf')
@@ -125,6 +125,9 @@ def get_polarizing_sentences(text):
         if polarity > max_polarity:
             max_polarity = polarity
             max_sentence = sent
+
+    min_sentence = str(min_sentence.text).strip()
+    max_sentence = str(max_sentence.text).strip()
 
     return min_sentence, max_sentence
 
@@ -192,9 +195,9 @@ df_symbol = df_symbol[['CompanyName']]
 # https://stackoverflow.com/questions/50422809/pandas-group-by-with-all-the-values-of-the-group-as-comma-separated
 df_company_name = df_company_name.groupby(df_company_name.index).Symbol.agg([('Symbol', ', '.join)])
 
-# Set up spaCy with sentencizer and entity ruler to find stock symbols/companies
+# Set up spaCy with entity ruler to find stock symbols/companies
+# Adapted from https://spacy.pythonhumanities.com/03_01_stock_analysis.html
 nlp = spacy.blank('en')
-nlp.add_pipe('sentencizer')
 ruler = nlp.add_pipe("entity_ruler")
 patterns = []
 for symbol in symbols:
@@ -204,6 +207,9 @@ for company in companies:
     if company not in stops:
         patterns.append({'label': 'Company', 'pattern': company})
 ruler.add_patterns(patterns)
+
+# Set up spaCy for use with sentencizer
+nlp2 = spacy.load('en_core_web_sm')
 
 # Set up vader
 vader = SentimentIntensityAnalyzer()
