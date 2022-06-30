@@ -163,14 +163,15 @@ def get_counts_df(text):
         return None
 
     # Add a symbol column to the DataFrame and sort by counts.
-    counts_df['symbol'] = counts_df.company.apply(lambda x: df_company_name.loc[x]['Symbol'])
+    counts_df['symbol'] = counts_df.company\
+        .apply(lambda x: df_company_name.loc[x]['Symbol'])
     counts_df = counts_df[['company', 'symbol', 'counts']]
     counts_df = counts_df.sort_values(by='counts', ascending=False)
 
     return counts_df
 
 
-### Setup ###
+# Setup
 
 # Stop words
 stops = {'A', 'RBC', 'two', 'UK'}
@@ -183,8 +184,8 @@ df = pd.read_csv("static/data/stocks.tsv", sep='\t')
 symbols = df.Symbol.tolist()
 companies = df.CompanyName.tolist()
 
-# DataFrame modified so that Symbol/CompanyName is the index to facilitate efficient lookup.
-# Used in get_counts_df()
+# DataFrame modified so that Symbol/CompanyName is the index to facilitate
+# efficient lookup. Used in get_counts_df()
 df_symbol = df.set_index('Symbol')
 df_company_name = df.set_index('CompanyName')
 
@@ -193,7 +194,8 @@ df_symbol = df_symbol[['CompanyName']]
 # duplicate indices. To handle this, we group by company name and set the
 # `symbol` column to equal all grouped stock symbols separated by commas
 # https://stackoverflow.com/questions/50422809/pandas-group-by-with-all-the-values-of-the-group-as-comma-separated
-df_company_name = df_company_name.groupby(df_company_name.index).Symbol.agg([('Symbol', ', '.join)])
+df_company_name = df_company_name.groupby(df_company_name.index).Symbol\
+    .agg([('Symbol', ', '.join)])
 
 # Set up spaCy with entity ruler to find stock symbols/companies
 # Adapted from https://spacy.pythonhumanities.com/03_01_stock_analysis.html

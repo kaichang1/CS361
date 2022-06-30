@@ -4,9 +4,11 @@ import main
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 @app.route("/analyze")
 def analyze():
@@ -20,6 +22,7 @@ def analyze():
         news = main.news_scraper()
         return render_template("analyze.html", news=news)
 
+
 @app.route("/results")
 def results():
     url = request.args.get("url")
@@ -30,7 +33,8 @@ def results():
 
     # If the scraper was unsuccessful
     if result is None:
-        flash("Oops! It looks like that page is in an unsupported format. Please try again and ensure that you are entering a MarketWatch article.")
+        flash("Oops! It looks like that page is in an unsupported format. "
+              "Please try again and ensure that you are entering a MarketWatch article.")
         return redirect(url_for("analyze"))
 
     title, body = result
@@ -45,19 +49,23 @@ def results():
         # At least one stock symbol or company is mentioned
         main_company = counts_table.iloc[0]["company"]
         main_symbol = counts_table.iloc[0]["symbol"]
-        counts_table = counts_table.to_html(index=False, justify="left", classes="table table-striped")
+        counts_table = counts_table.to_html(index=False, justify="left",
+                                            classes="table table-striped")
     else:
         # No stock symbols or companies are mentioned
         main_company = None
         main_symbol = None
 
-    return render_template("results.html", url=url, title=title, counts_table=counts_table,
-                           main_company=main_company, main_symbol=main_symbol, subjectivity=subjectivity,
+    return render_template("results.html", url=url, title=title,
+                           counts_table=counts_table, main_company=main_company,
+                           main_symbol=main_symbol, subjectivity=subjectivity,
                            polarity=polarity, polarizing_sentences=polarizing_sentences)
+
 
 @app.route("/help")
 def help():
     return render_template("help.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
