@@ -55,8 +55,8 @@ def article_scraper(url):
 
     soup = BeautifulSoup(webpage.content, 'html.parser')
     try:
-        title = soup.find(attrs={'itemprop': 'headline'}).get_text()
-        body = soup.find(attrs={'itemprop': 'articleBody'}).get_text()
+        title = soup.find(attrs={'itemprop': 'headline'}).get_text().strip()
+        body = soup.find(attrs={'itemprop': 'articleBody'}).get_text().strip()
     except AttributeError:
         return None
 
